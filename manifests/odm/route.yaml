@@ -1,0 +1,9 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: odm
+  labels: { app: odm }
+spec:
+  to: { kind: Service, name: odm }
+  port: { targetPort: http }
+  # tls: { termination: edge }

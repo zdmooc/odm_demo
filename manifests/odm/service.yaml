@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: odm
+  labels: { app: odm }
+spec:
+  selector: { app: odm }
+  ports:
+    - { name: http, port: 9060, targetPort: 9060, protocol: TCP }

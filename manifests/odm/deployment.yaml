@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odm
+  labels: { app: odm }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: odm } }
+  template:
+    metadata: { labels: { app: odm } }
+    spec:
+      containers:
+        - name: odm
+          image: icr.io/cpopen/odm-k8s/odm:9.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - { name: LICENSE, value: "accept" }
+            - { name: SAMPLE,  value: "true" }
+          ports:
+            - { name: http, containerPort: 9060, protocol: TCP }
+          readinessProbe:
+            httpGet: { path: "/", port: 9060 }
+            initialDelaySeconds: 30
+          livenessProbe:
+            httpGet: { path: "/", port: 9060 }
+            initialDelaySeconds: 60
+          resources:
+            requests: { cpu: "250m", memory: "1Gi" }
+            limits:   { cpu: "1",    memory: "2Gi" }
